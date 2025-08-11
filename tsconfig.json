@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "types"
+  },
+  "files": [
+    "templar.js"
+  ],
+  "exclude": [
+    "./*.d.ts"
+  ]
+}
