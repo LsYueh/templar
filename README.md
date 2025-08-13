@@ -25,7 +25,19 @@ TMP電文中除`X`與`9`的文字解析外，還支援各種COBOL的`S9`有正�
 
 <br>
 
-`S9`解析範例 (IBM COBOL)
+|  選 項  | 對 應 COBOL |
+| :----: | :---- |
+| ca | RM/COBOL (not RM/COBOL-85) |
+| cb | MBP COBOL |
+| ci | IBM COBOL (RM/COBOL-85) |
+| cm | Micro Focus COBOL |
+| cn | NCR COBOL |
+| cr | Realia COBOL |
+| cv | VAX COBOL |
+
+<br>
+
+COBOL的`S9`對正負號數字表示範例 (IBM COBOL)
 ```cobol
 PIC S9(3) VALUE -123.
 TRAILING                 '1'   '2'   'L'
@@ -129,8 +141,4 @@ MESSAGE ID︰T1、T2、T3、T4、T5、T6、T7
 
 ### 訊息格式
 MESSAGE ID︰R1、R2、R3、R4、R5、R6
-
-<br>
-
-## 其他
 
