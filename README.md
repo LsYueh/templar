@@ -5,6 +5,59 @@
 - `O-101-A10 主機連線電腦作業手冊`  
 - `O-105-A10 TCPIP網路主機連線電腦作業手冊`  
 
+<br><br>
+
+# COBOL PICTURE Clause 處理
+TMP電文中除`X`與`9`的文字解析外，還支援各種COBOL的`S9`有正負號的數字字串轉換
+
+|  數 字  | ca,<br>cb,<br>cm,<br>cr<br>Positive | ci,<br>cn<br>Positive | ca,<br>ci,<br>cn<br>Negative | cb<br>Negative | cm<br>Negative | cr<br>Negative |
+| :---- | :---- | :------ | :------ | :------ | :------ | :------ |
+| 0 | '0' | '{' | '}' | '@' | 'p' | ' ' (space) |
+| 1 | '1' | 'A' | 'J' | 'A' | 'q' | '!' |
+| 2 | '2' | 'B' | 'K' | 'B' | 'r' | '"' (double-quote) |
+| 3 | '3' | 'C' | 'L' | 'C' | 's' | '#' |
+| 4 | '4' | 'D' | 'M' | 'D' | 't' | '$' |
+| 5 | '5' | 'E' | 'N' | 'E' | 'u' | '%' |
+| 6 | '6' | 'F' | 'O' | 'F' | 'v' | '&' |
+| 7 | '7' | 'G' | 'P' | 'G' | 'w' | ''' (single-quote) |
+| 8 | '8' | 'H' | 'Q' | 'H' | 'x' | '(' |
+| 9 | '9' | 'I' | 'R' | 'I' | 'y' | ')' |
+
+<br>
+
+`S9`解析範例 (IBM COBOL)
+```cobol
+PIC S9(3) VALUE -123.
+TRAILING                 '1'   '2'   'L'
+TRAILING SEPARATE  '1'   '2'   '3'   '-'
+LEADING                  'J'   '2'   '3'
+LEADING SEPARATE   '-'   '1'   '2'   '3'
+
+PIC S9(5)V9 VALUE -12345.6.
+TRAILING                '1'  '2'  '3'  '4'  '5'  'O'
+TRAILING SEPARATE  '1'  '2'  '3'  '4'  '5'  '6'  '-'
+LEADING                 'J'  '2'  '3'  '4'  '5'  '6'
+LEADING SEPARATE   '-'  '1'  '2'  '3'  '4'  '5'  '6'
+```
+
+<br><br>
+
+# 交易所TMP連線架構
+
+## 實體線
+
+|  PVC<br>或<br>PORT NO | 執行功能 |
+| :----: | :----: |
+| 01 | FT送 |
+| 02 | FT收 |
+| 03 | 成交回報 |
+| 04 | 委託輸入 |
+| 05 | 委託輸入 |
+| 06 | 委託輸入 |
+| 07 | 委託輸入 |
+| 08 | 委託輸入 |
+| 09 | 委託輸入 |
+
 <br>
 
 ## PVC作業時間表
