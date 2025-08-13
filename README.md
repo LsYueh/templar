@@ -1,5 +1,7 @@
-# TeMPlar - 臺灣證券交易所 TMP 資料轉換工具 (for Node.js)  
-[TWSE 國內業務宣導網站](https://dsp.twse.com.tw/)  
+# TeMPlar
+`TMP`是臺灣證券交易所（TWSE）所使用的專屬傳輸協定，全名為`Transaction Message Protocol`，用於證券交易相關的訊息傳輸。此工具用於解析TMP提供的`委託`/`成交`/`申報`/`檔案傳輸`服務訊息內容，將序列化的字串資料轉為非序列化的資料物件後再加以利用。
+
+<br>
 
 參考資料：
 - `O-101-A10 主機連線電腦作業手冊`  
@@ -56,7 +58,11 @@ LEADING SEPARATE   '-'  '1'  '2'  '3'  '4'  '5'  '6'
 
 # 交易所TMP連線架構
 
+PVC：Permanent Virtual Circuit（永久虛擬電路）
+
 ## 實體線
+
+一條實體線上可建立多條PVC，每10條PVC為一組。
 
 |  PVC<br>或<br>PORT NO | 執行功能 |
 | :----: | :----: |
@@ -93,7 +99,7 @@ LEADING SEPARATE   '-'  '1'  '2'  '3'  '4'  '5'  '6'
 | 19:00以後 | 1.完成各項業務<br>2.離線作業<br>&emsp;雙方進入離線狀態 |
 
 ### 訊息格式
-MESSAGE ID︰L010、L020、L030、L040、L050、L060、L070、L080
+> MESSAGE ID︰L010、L020、L030、L040、L050、L060、L070、L080
 
 <br>
 
@@ -106,13 +112,13 @@ MESSAGE ID︰L010、L020、L030、L040、L050、L060、L070、L080
 | 19:00 | 連線子系統 | 離線 |
 
 ### 訊息格式 (傳送功能)
-MESSAGE ID︰F010、F020、F030(F210)、F040(F220)、F050、F060、F070、F080  
+> MESSAGE ID︰F010、F020、F030(F210)、F040(F220)、F050、F060、F070、F080  
 
 ### 訊息格式 (接收功能)
-MESSAGE ID︰F090、F100、F110(F230)、F120(F240)、F130、F140、F150、F160  
+> MESSAGE ID︰F090、F100、F110(F230)、F120(F240)、F130、F140、F150、F160  
 
 ### 訊息格式
-MESSAGE ID︰F170、F180、F190、F200
+> MESSAGE ID︰F170、F180、F190、F200
 
 
 <br>
@@ -126,7 +132,7 @@ MESSAGE ID︰F170、F180、F190、F200
 | 16:00 | 連線子系統 | 結束委託輸入，回到連線子系統。<br>離線 |
 
 ### 訊息格式
-MESSAGE ID︰T1、T2、T3、T4、T5、T6、T7
+> MESSAGE ID︰T1、T2、T3、T4、T5、T6、T7
 
 <br>
 
@@ -140,5 +146,9 @@ MESSAGE ID︰T1、T2、T3、T4、T5、T6、T7
 | 14:40 | 連線子系統 | 結束委託輸入，回到連線子系統。<br>離線 |
 
 ### 訊息格式
-MESSAGE ID︰R1、R2、R3、R4、R5、R6
+> MESSAGE ID︰R1、R2、R3、R4、R5、R6
 
+
+<br>
+
+[TWSE 國內業務宣導網站](https://dsp.twse.com.tw/)  
