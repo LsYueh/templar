@@ -9,6 +9,29 @@
 
 <br><br>
 
+# 專案結構
+
+```console
+{project-root}
+ ├─ lib
+ │   ├─ field
+ │   │   ├─ cobol  <--------- COBOL格式解析
+ │   │   ├─ data-type.js
+ │   │   └─ field.js.js  <--- 欄位轉換
+ │   ├─ message  <----------- 訊息解析
+ │   ├─ spec
+ │   │   ├─ message  <------- TMP格式訊息欄位組成定義
+ │   │   │   ├─ body
+ │   │   │   └─ header.js
+ │   │   └─ messages  <------ 交易所電文種類定義
+ │   │       ├─ otc.js
+ │   │       └─ tse.js
+ │   └─ meta.js
+ └─ templar.js
+```
+
+<br><br>
+
 # COBOL PICTURE Clause 處理
 TMP電文中除`X`與`9`的文字解析外，還支援各種COBOL的`S9`有正負號的數字字串轉換
 
