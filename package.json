@@ -1,6 +1,6 @@
 {
   "name": "templar",
-  "version": "0.0.0-alpha",
+  "version": "0.0.0-alpha1",
   "description": "TWSE Transaction Message Protocol (TMP) converter",
   "main": "templar.js",
   "type": "commonjs",

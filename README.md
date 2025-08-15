@@ -1,34 +1,126 @@
 # TeMPlar
 `TMP`是臺灣證券交易所（TWSE）所使用的專屬傳輸協定，全名為`Transaction Message Protocol`，用於證券交易相關的訊息傳輸。此工具用於解析TMP提供的`委託`/`成交`/`申報`/`檔案傳輸`服務訊息內容，將序列化的字串資料轉為非序列化的資料物件後再加以利用。
 
+<br><br>
+
+# 使用方式
+
+## 成交回報
+
+```javascript
+const { parse } = require('./parse-r.js');
+
+parse('500000085959008450000001'); // R1
+
+console.log(message);
+
+// Message_t {
+//   body: [ { BrokerId: '8450', StartSeq: 1 } ],
+//   raw: '500000085959008450000001',
+//   header: {
+//     SubsystemName: '50',
+//     FunctionCode: '00',
+//     MessageType: '00',
+//     MessageTime: 2025-08-15T00:59:59.000Z,
+//     StatusCode: '00'
+//   },
+//   id: 'R1',
+//   remained: ''
+// }
+```
+
 <br>
 
-參考資料：
-- `O-101-A10 主機連線電腦作業手冊`  
-- `O-105-A10 TCPIP網路主機連線電腦作業手冊`  
+```javascript
+const { parse } = require('./parse-r.js');
+
+parse('50100009005900013202' + ''.padStart(66, '0')+ ''.padStart(66, '0')); // R3
+
+console.log(message);
+
+// Message_t {
+//   body: [
+//     {
+//       StkNo: '000000',
+//       MthQty: 0,
+//       MthPr: 0,
+//       MthTime: 2025-08-14T16:00:00.000Z,
+//       ExCd: '0',
+//       BuySell: '0',
+//       OrderNo: '00000',
+//       IVAcNo: '0000000',
+//       OdrTpe: '0',
+//       SeqNo: '000000',
+//       BrokerId: '0000',
+//       RecNo: '00000000',
+//       MarkS: '0'
+//     },
+//     {
+//       StkNo: '000000',
+//       MthQty: 0,
+//       MthPr: 0,
+//       MthTime: 2025-08-14T16:00:00.000Z,
+//       ExCd: '0',
+//       BuySell: '0',
+//       OrderNo: '00000',
+//       IVAcNo: '0000000',
+//       OdrTpe: '0',
+//       SeqNo: '000000',
+//       BrokerId: '0000',
+//       RecNo: '00000000',
+//       MarkS: '0'
+//     }
+//   ],
+//   raw: '50100009005900013202000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+//   header: {
+//     SubsystemName: '50',
+//     FunctionCode: '10',
+//     MessageType: '00',
+//     MessageTime: 2025-08-15T01:00:59.000Z,
+//     StatusCode: '00',
+//     BodyLength: 132,
+//     BodyCnt: 2
+//   },
+//   id: 'R3',
+//   remained: ''
+// }
+```
+
+<br>
+
+```javascript
+const { parse } = require('./parse-r.js');
+
+parse('50200011223300999998'); // R6
+
+console.log(message);
+
+// Message_t {
+//   body: [ { TotalRecord: 999998 } ],
+//   raw: '50200011223300999998',
+//   header: {
+//     SubsystemName: '50',
+//     FunctionCode: '20',
+//     MessageType: '00',
+//     MessageTime: 2025-08-15T03:22:33.000Z,
+//     StatusCode: '00'
+//   },
+//   id: 'R6',
+//   remained: ''
+// }
+
+
+parse('5020001122330099999'); // R6 (Error!)
+
+console.log(message);
+
+// Exception: [R6] Insufficient message length, require '6', got '5'.
+```
 
 <br><br>
 
-# 專案結構
-
-```console
-{project-root}
- ├─ lib
- │   ├─ field
- │   │   ├─ cobol  <--------- COBOL格式解析
- │   │   ├─ data-type.js
- │   │   └─ field.js.js  <--- 欄位轉換
- │   ├─ message  <----------- 訊息解析
- │   ├─ spec
- │   │   ├─ message  <------- TMP格式訊息欄位組成定義
- │   │   │   ├─ body
- │   │   │   └─ header.js
- │   │   └─ messages  <------ 交易所電文種類定義
- │   │       ├─ otc.js
- │   │       └─ tse.js
- │   └─ meta.js
- └─ templar.js
-```
+# 時間格式表示
+在交易所提供的文件中，`X(8)`對應`YYYYMMDD`的`DATE`型別，而`X(6)`與`X(9)`分別對應`HHmmss`/`HHmmssSSS`的`TIME`型別。目前Node 22尚未支援`Temporal.PlainTime`與`Temporal.PlainDate`，故對於上述資料型態的轉換會統一轉換至JS的`Date`型別，其中`X(6)`與`X(9)`會自動補上當下執行的日期。
 
 <br><br>
 
@@ -171,7 +263,37 @@ PVC：Permanent Virtual Circuit（永久虛擬電路）
 ### 訊息格式
 > MESSAGE ID︰R1、R2、R3、R4、R5、R6
 
+<br><br>
+
+# 專案結構
+
+```console
+{project-root}
+ ├─ lib
+ │   ├─ field
+ │   │   ├─ cobol  <--------- COBOL格式解析
+ │   │   ├─ data-type.js
+ │   │   └─ field.js.js  <--- 欄位轉換
+ │   ├─ message  <----------- 訊息解析
+ │   ├─ spec
+ │   │   ├─ message  <------- TMP格式訊息欄位組成定義
+ │   │   │   ├─ body
+ │   │   │   └─ header.js
+ │   │   └─ messages  <------ 交易所電文種類定義
+ │   │       ├─ otc.js
+ │   │       └─ tse.js
+ │   └─ meta.js
+ └─ templar.js
+```
+
+<br><br>
+
+# 其他
+
+[TWSE 國內業務宣導網站](https://dsp.twse.com.tw/)  
 
 <br>
 
-[TWSE 國內業務宣導網站](https://dsp.twse.com.tw/)  
+參考資料：
+- `O-101-A10 主機連線電腦作業手冊`  
+- `O-105-A10 TCPIP網路主機連線電腦作業手冊`  
