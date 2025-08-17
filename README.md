@@ -5,12 +5,43 @@
 
 # 使用方式
 
+## 單筆訊息及檔案傳輸
+
+```js
+const { parse } = require('./parse-f.js');
+```
+
+```js
+const message = parse('20000008595900845000000011T3000000100');
+
+console.log(message);
+
+// Message_t {
+//   body: [ { FileCode: 'T30', FileSize: 100 } ],
+//   raw: '20000008595900845000000011T3000000100',
+//   header: {
+//     SubsystemName: '20',
+//     FunctionCode: '00',
+//     MessageType: '00',
+//     MessageTime: 2025-08-17T00:59:59.000Z,
+//     StatusCode: '00',
+//     SourceId: '8450',
+//     ObjectId: '0000',
+//     BodyLength: 11
+//   },
+//   id: 'F010',
+//   remained: ''
+// }
+```
+
 ## 成交回報
 
-```javascript
+```js
 const { parse } = require('./parse-r.js');
+```
 
-parse('500000085959008450000001'); // R1
+```js
+const message = parse('500000085959008450000001'); // R1
 
 console.log(message);
 
@@ -29,12 +60,8 @@ console.log(message);
 // }
 ```
 
-<br>
-
-```javascript
-const { parse } = require('./parse-r.js');
-
-parse('50100009005900013202' + ''.padStart(66, '0')+ ''.padStart(66, '0')); // R3
+```js
+const message = parse('50100009005900013202' + ''.padStart(66, '0')+ ''.padStart(66, '0')); // R3
 
 console.log(message);
 
@@ -86,12 +113,8 @@ console.log(message);
 // }
 ```
 
-<br>
-
-```javascript
-const { parse } = require('./parse-r.js');
-
-parse('50200011223300999998'); // R6
+```js
+const message = parse('50200011223300999998'); // R6
 
 console.log(message);
 
@@ -111,8 +134,6 @@ console.log(message);
 
 
 parse('5020001122330099999'); // R6 (Error!)
-
-console.log(message);
 
 // Exception: [R6] Insufficient message length, require '6', got '5'.
 ```
