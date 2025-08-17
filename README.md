@@ -293,11 +293,11 @@ PVC：Permanent Virtual Circuit（永久虛擬電路）
  ├─ lib
  │   ├─ field
  │   │   ├─ cobol  <--------- COBOL格式解析
- │   │   ├─ data-type.js
- │   │   └─ field.js.js  <--- 欄位轉換
+ │   │   └─ field.js  <------ 欄位轉換
  │   ├─ message  <----------- 訊息解析
  │   ├─ spec
- │   │   ├─ message  <------- TMP格式訊息欄位組成定義
+ │   │   ├─ field    <------- TMP格式欄位定義
+ │   │   ├─ message  <------- TMP格式訊息定義
  │   │   │   ├─ body
  │   │   │   └─ header.js
  │   │   └─ messages  <------ 交易所電文種類定義
