@@ -310,10 +310,4 @@ PVC：Permanent Virtual Circuit（永久虛擬電路）
 
 # 其他
 
-[TWSE 國內業務宣導網站](https://dsp.twse.com.tw/)  
-
-<br>
-
-參考資料：
-- `O-101-A10 主機連線電腦作業手冊`  
-- `O-105-A10 TCPIP網路主機連線電腦作業手冊`  
+[參考資料](./doc/refs.md)  
