@@ -339,11 +339,11 @@ PVC：Permanent Virtual Circuit（永久虛擬電路）
  │   ├─ message  <----------- 訊息解析
  │   ├─ spec
  │   │   ├─ copybook  <------ 各類FILE-CODE檔案內容定義
- │   │   ├─ field  <--------- TMP格式欄位定義
- │   │   ├─ message  <------- TMP格式訊息定義
+ │   │   ├─ field  <--------- 欄位基本資料結構
+ │   │   ├─ fields  <-------- 欄位組成後定義
  │   │   │   ├─ body
  │   │   │   └─ header.js
- │   │   └─ messages  <------ 交易所電文種類定義
+ │   │   └─ messages  <------ 訊息種類定義
  │   │       ├─ otc.js
  │   │       └─ tse.js
  │   └─ meta.js
