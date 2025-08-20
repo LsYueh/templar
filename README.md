@@ -343,7 +343,7 @@ PVC：Permanent Virtual Circuit（永久虛擬電路）
  │   │   ├─ fields  <-------- 欄位組成後定義
  │   │   │   ├─ body
  │   │   │   └─ header.js
- │   │   └─ messages  <------ 訊息種類定義
+ │   │   └─ message  <------- 訊息種類定義
  │   │       ├─ otc.js
  │   │       └─ tse.js
  │   └─ meta.js
