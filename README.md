@@ -140,13 +140,57 @@ parse('5020001122330099999'); // R6 (Error!)
 
 <br><br>
 
-# 時間格式表示
+# 資料型態對照表
+
+## 字串
+| COBOL PIC   | 說明                   | SQL 對應                    |
+| ----------- | ---------------------- | :------------------------: |
+| `PIC X(n)`  | 任意字元，長度 n            | `CHAR(n)` / `VARCHAR(n)`   |
+| `PIC A(n)`  | 只允許字母                 | `CHAR(n)` / `VARCHAR(n)`   |
+| `PIC AN(n)` | 字母 + 數字                | `CHAR(n)` / `VARCHAR(n)`   |
+| `PIC G(n)`  | 雙位元組字元 (DBCS, EBCDIC) | `NCHAR(n)` / `NVARCHAR(n)` |
+
+<br>
+
+## 整數
+
+| COBOL PIC                  | 位數 (n) | SIGNED 對應 (範圍)                                                           | UNSIGNED 對應 (範圍)                                           |
+| -------------------------- | :-----: | --------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `PIC 9(1)` \~ `PIC 9(3)`<br>`PIC S9(1)` \~ `PIC S9(3)`   | 1–2 位   | `TINYINT`<br>範圍 **-128 \~ 127**                                            | `TINYINT UNSIGNED`<br>範圍 **0 \~ 255**                       |
+| `PIC 9(4)` \~ `PIC 9(5)`<br>`PIC S9(4)` \~ `PIC S9(5)`   | 3–4 位   | `SMALLINT`<br>範圍 **-32,768 \~ 32,767**                                     | `SMALLINT UNSIGNED`<br>範圍 **0 \~ 65,535**                   |
+| `PIC 9(6)` \~ `PIC 9(8)`<br>`PIC S9(6)` \~ `PIC S9(8)`   | 5–6 位   | `MEDIUMINT`<br>範圍 **-8,388,608 \~ 8,388,607**                              | `MEDIUMINT UNSIGNED`<br>範圍 **0 \~ 16,777,215**              |
+| `PIC 9(9)` \~ `PIC 9(10)`<br>`PIC S9(9)` \~ `PIC S9(10)`  | 7–9 位  | `INT`<br>範圍 **-2,147,483,648 \~ 2,147,483,647**                            | `INT UNSIGNED`<br>範圍 **0 \~ 4,294,967,295**                 |
+| `PIC 9(11)` \~ `PIC 9(18)`<br>`PIC S9(11)` \~ `PIC S9(18)` | 10–18 位 | `BIGINT`<br>範圍 **-9,223,372,036,854,775,808 \~ 9,223,372,036,854,775,807** | `BIGINT UNSIGNED`<br>範圍 **0 \~ 18,446,744,073,709,551,615** |
+| `PIC 9(n)`<br>`PIC S9(n)`                 | >18 位   | `DECIMAL(n,0)`                                                              | `DECIMAL(n,0)`                                               |
+
+
+<br>
+
+## 小數
+
+| COBOL PIC        | 說明                 | SQL 對應           |
+| ---------------- | -------------------- | :---------------: |
+| `PIC 9(n)V9(m)`  | 無號小數，整數 n 位，小數 m 位 | `DECIMAL(n+m, m)` |
+| `PIC S9(n)V9(m)` | 有號小數，整數 n 位，小數 m 位 | `DECIMAL(n+m, m)` |
+
+<br>
+
+## 時間/日期
+
+| COBOL PIC                    |   用途   | SQL 對應    |
+| ---------------------------- | ------- | :---------: |
+| `PIC X(8)` (YYYYMMDD)        | 日期     | `DATE`      |
+| `PIC X(6)` (HHmmss)          | 時間     | `TIME`      |
+| `PIC X(9)` (HHmmssSSS)       | 時間     | `TIME`      |
+| `PIC X(14)` (YYYYMMDDHHmmss) | 時間戳記 | `TIMESTAMP` |
+
+### JS時間格式表示
 在交易所提供的文件中，`X(8)`對應`YYYYMMDD`的`DATE`型別，而`X(6)`與`X(9)`分別對應`HHmmss`/`HHmmssSSS`的`TIME`型別。目前Node 22尚未支援`Temporal.PlainTime`與`Temporal.PlainDate`，故對於上述資料型態的轉換會統一轉換至JS的`Date`型別，其中`X(6)`與`X(9)`會自動補上當下執行的日期。
 
 <br><br>
 
 # COBOL PICTURE Clause 處理
-TMP電文中除`X`與`9`的文字解析外，還支援各種COBOL的`S9`有正負號的數字字串轉換
+`S9`有正負號的數字字串轉換
 
 |  數 字  | ca,<br>cb,<br>cm,<br>cr<br>Positive | ci,<br>cn<br>Positive | ca,<br>ci,<br>cn<br>Negative | cb<br>Negative | cm<br>Negative | cr<br>Negative |
 | :---- | :---- | :------ | :------ | :------ | :------ | :------ |
