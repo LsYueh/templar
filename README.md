@@ -140,6 +140,38 @@ parse('5020001122330099999'); // R6 (Error!)
 
 <br><br>
 
+# 訊息處理
+
+## 中文字
+交易所的TMP訊息採`ASCII編碼`，而中文字常用`CP950`的編碼方式傳入，故在字串切割上一個中文字實算兩個字元空間。
+
+```js
+const { parse } = require('./lib/field/parse.js');
+
+test('Parse CP950', async (t) => {
+    const buffer = iconv.encode('中文字', 'cp950')
+    t.equal(parse({ picStr: 'X(4)', dataType: DATA_TYPE.String, buffer }), '中文');
+    t.equal(parse({ picStr: 'X(5)', dataType: DATA_TYPE.String, buffer }), '中文�');
+    t.equal(parse({ picStr: 'X(6)', dataType: DATA_TYPE.String, buffer }), '中文字');
+});
+```
+
+<br>
+
+## 數字
+復刻COBOL文字與數字不同的`對齊方式` (文字靠左，數字靠右)。
+
+```js
+const { parse } = require('./lib/field/parse.js');
+
+test('Parse PIC 9', async (t) => {
+    t.equal(parse({ picStr: '9(5)', dataType: DATA_TYPE.Unsigned, buffer: Buffer.from('12345') }), 12345);
+    t.equal(parse({ picStr: '9(5)', dataType: DATA_TYPE.Unsigned, buffer: Buffer.from('123456') }), 23456);
+});
+```
+
+<br><br>
+
 # 資料型態對照表
 
 ## 字串
