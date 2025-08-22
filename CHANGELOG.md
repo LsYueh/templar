@@ -5,10 +5,14 @@
 ### Changed
 * `DATA_TYPE.X`對字串(PIC X)處理不做Trim
 
+<br>
+
 ## 0.0.0-alpha2 (2025-08-21)
 
 ### Added
 * 檔案傳輸訊息解析
+
+<br>
 
 ## 0.0.0-alpha1 (2025-08-15)
 
