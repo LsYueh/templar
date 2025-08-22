@@ -221,8 +221,8 @@ test('Parse PIC 9', async (t) => {
 
 <br><br>
 
-# COBOL PICTURE Clause 處理
-`S9`有正負號的數字字串轉換
+# 正負號數字`S9`字串轉換
+`Signed overpunch`源自Hollerith(赫爾曼·何樂禮)打孔卡編碼，為解決正負號帶來的字元浪費與孔位長度變動的問題，將`數字`與`正負號`整併至一個孔位解讀。目前已知COBOL的對應關係有：
 
 |  數 字  | ca,<br>cb,<br>cm,<br>cr<br>Positive | ci,<br>cn<br>Positive | ca,<br>ci,<br>cn<br>Negative | cb<br>Negative | cm<br>Negative | cr<br>Negative |
 | :---- | :---- | :------ | :------ | :------ | :------ | :------ |
@@ -264,6 +264,39 @@ TRAILING                '1'  '2'  '3'  '4'  '5'  'O'
 TRAILING SEPARATE  '1'  '2'  '3'  '4'  '5'  '6'  '-'
 LEADING                 'J'  '2'  '3'  '4'  '5'  '6'
 LEADING SEPARATE   '-'  '1'  '2'  '3'  '4'  '5'  '6'
+```
+
+<br>
+
+```js
+// IBM COBOL (-dci) and Trailing
+
+'S9(3)V9': '12C' >> 12.3
+'S9(3)V9': '12L' >> -12.3
+
+'S9(1)V9': '12C' >> 2.3
+'S9(1)V9': '12L' >> -2.3
+
+```
+
+<br>
+
+雖然支援`Leading`解析，但是會跟某些`Overpunch`查表定義衝突
+
+```js
+// IBM COBOL (-dci) and Leading
+
+'S9(3)V9': 'J23' >> -12.3
+
+'S9(1)V9': 'J23' >> `Exception: Unknown overpunch char: '2'`
+
+```
+
+```js
+// Micro Focus COBOL (-dcm) and Leading
+
+'S9(1)V9': 'J23' >> 2.3
+
 ```
 
 <br><br>
