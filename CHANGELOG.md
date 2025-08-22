@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.0-alpha3 (2025-08-22)
+
+### Changed
+* `DATA_TYPE.X`對字串(PIC X)處理不做Trim
+
 ## 0.0.0-alpha2 (2025-08-21)
 
 ### Added
