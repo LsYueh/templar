@@ -21,6 +21,7 @@
     "url": "git+https://github.com/LsYueh/templar.git"
   },
   "keywords": [
+    "COBOL",
     "TWSE",
     "TMP"
   ],
@@ -33,10 +34,12 @@
     "semver": "^7.7.2",
     "tap": "^21.1.0"
   },
+  "dependencies": {
+    "iconv-lite": "^0.7.0",
+    "sequelize": "^6.37.7",
+    "yargs": "^18.0.0"
+  },
   "engines": {
     "node": ">=18"
-  },
-  "dependencies": {
-    "iconv-lite": "^0.7.0"
   }
 }
