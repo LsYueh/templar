@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.0.0-alpha4 (2025-08-24)
+
+### Added
+* 導出`parse`至`templar.js`
+
+<br>
+
 ## 0.0.0-alpha3 (2025-08-22)
 
 ### Changed

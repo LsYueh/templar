@@ -1,5 +1,7 @@
 'use strict'
 
+const f = require('./lib/message/parse/file-transfer.js')
+const r = require('./lib/message/parse/report.js')
 const { version } = require('./lib/meta')
 
 
@@ -9,18 +11,37 @@ const { version } = require('./lib/meta')
 
 /**
  * parse
- * @param {string} src 
+ * @param {string|Buffer} message 
+ * @param {object} [options]
+ * @param {string} [options.category] - 'file-transfer' or 'report' (default: 'file-transfer')
  */
-function parse(src) {
+function parse(message, options = {}) {
+    if (!message) {
+        throw new TypeError('Invalid message, require string or Buffer.')
+    }
 
+    const catgory = options?.category || 'file-transfer';
+    if (catgory !== 'file-transfer' && catgory !== 'report')
+        throw new TypeError(`Invalid category '${catgory}', require 'file-transfer' or 'report'.`);
+
+    switch (catgory) {
+        case 'file-transfer': // File Transfer
+            return f.parse(message)
+
+        case 'report': // Report
+            return r.parse(message)
+
+        default:
+            throw new TypeError(`Invalid category '${catgory}', require 'file-transfer' or 'report'.`);
+    }   
 }
 
 /**
  * stringify
- * @param {string} src 
+ * @param {object} obj 
  */
-function stringify(src) {
-
+function stringify(obj) {
+    throw new Error('Not implemented.');
 }
 
 
