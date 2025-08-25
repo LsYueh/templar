@@ -12,6 +12,8 @@ const { buildDDL } = require('./ddl-gen.js');
 test('buildDDL test' , async (t) => {
     t.ok(buildDDL, 'buildDDL function should be defined');
     
-    const ddl = buildDDL('mysql');
-    t.type(ddl, 'string', 'DDL should be a string');
+    const ddls = buildDDL('mysql', 'T30');
+    t.ok(Array.isArray(ddls), 'buildDDL should return an array');
+    t.ok(ddls.length > 0, 'buildDDL should return non-empty array');
+    t.ok(ddls[0].startsWith('create table'), 'First DDL should start with "create table"');
 });
