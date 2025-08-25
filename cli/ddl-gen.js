@@ -11,7 +11,10 @@ const { hideBin } = require('yargs/helpers');
 
 const Knex = require('knex');
 
-const copybooks = require('../lib/spec/copybook/index.js');
+const copybooks = {
+    tse: require('../lib/spec/copybook/tse/index.js'),
+    otc: require('../lib/spec/copybook/otc/index.js'),
+}
 const { DATA_TYPE } = require('../lib/spec/field/field.js');
 
 
@@ -59,17 +62,20 @@ function columnGen(field, table) {
 }
 
 /** 建立資料表的 DDL 語法
- * @param {string} [client] 資料庫方言 (e.g., 'mysql', 'postgres', 'sqlite')
- * @param {string|null} [fileCode] 指定的 Copybook FILE-CODE (若為 null 則產生所有 Copybook 的 DDL)
+ * @param {object} options
+ * @param {string} [options.client] 資料庫方言 (e.g., 'mysql', 'postgres', 'sqlite')
+ * @param {string} [options.market] 市場別 (e.g., 'TSE', 'OTC')，預設為 'TSE'
+ * @param {string} [options.fileCode] 指定的 Copybook FILE-CODE (若為 null 則產生所有 Copybook 的 DDL)
  * @return {string} DDL 語法
  */
-function buildDDL(client, fileCode = null) {
-    const knex = Knex({ client: client || 'sqlite' });
+function buildDDL(options) {
+    const knex = Knex({ client: options.client || 'sqlite' });
+
+    const market = (options.market || 'TSE').toLowerCase();
+    
+    const targetCopybooks = options.fileCode ? { [options.fileCode]: copybooks[market][options.fileCode] } : copybooks[market];
 
     const ddls = [];
-
-    const targetCopybooks = fileCode ? { [fileCode]: copybooks[fileCode] } : copybooks;
-
     // Copybook 的 Field 定義來產生 DDL
     for (const copybook of Object.values(targetCopybooks)) {
         const tableName = copybook.fileCode.toLowerCase();
@@ -93,7 +99,7 @@ function buildDDL(client, fileCode = null) {
 
         ddls.push(ddl);
 
-        console.log(`-- DDL for table: ${copybook.fileCode} - ${copybook.description} --`);
+        console.log(`-- DDL for table: ${copybook.fileCode} (${market.toUpperCase()}) - ${copybook.description} --`);
     }
 
     return ddls;
@@ -119,10 +125,15 @@ function main(argv) {
         return process.exit(1);
     }
 
+    const market = (argv.market || 'TSE').toLowerCase();
+    if (!['tse', 'otc'].includes(market)) {
+        throw new Error(`Unknown market '${market}'. Supported markets are: TSE, OTC.`);
+    }
+
     const fileCode = argv.file || null;
 
     if (fileCode) {
-        if (!copybooks[fileCode]) {
+        if (!copybooks[market][fileCode]) {
             console.error(`Error: Unknown FILE-CODE '${fileCode}'.`);
             return process.exit(1);
         }
@@ -131,7 +142,7 @@ function main(argv) {
     console.log(`-- DDL for database client: ${client} --`);
 
     try {
-        const ddls = buildDDL(client, fileCode);
+        const ddls = buildDDL({client, market, fileCode});
         console.log(ddls.join(';\n') + ';');
     } catch (err) {
         console.error(`Error: ${err.message}`);
@@ -147,6 +158,11 @@ if (require.main === module) {
         .option('client', {
             type: 'string',
             describe: 'Database client (e.g., mysql, postgres, sqlite)',
+        })
+        .option('market', {
+            type: 'string',
+            describe: 'Market (TSE or OTC, default: TSE)',
+            default: 'TSE',
         })
         .option('file', {
             type: 'string',

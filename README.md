@@ -68,7 +68,7 @@ $ npm install knex --save
 ```
 <br>
 
-請自行安裝對應的資料庫驅動程式套件
+安裝對應的資料庫驅動程式套件
 ```console
 # Then add one of the following (adding a --save) flag:
 $ npm install pg pg-native # Postgres
