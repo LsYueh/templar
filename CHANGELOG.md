@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.0.0-alpha5 (2025-08-25)
+
+### Added
+* 讓Copybook支援處理`上櫃`用的檔案
+
+<br>
+
 ## 0.0.0-alpha4 (2025-08-24)
 
 ### Added

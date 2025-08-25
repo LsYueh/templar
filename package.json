@@ -1,6 +1,6 @@
 {
   "name": "templar",
-  "version": "0.0.0-alpha4",
+  "version": "0.0.0-alpha5",
   "description": "TWSE Transaction Message Protocol (TMP) converter",
   "main": "templar.js",
   "type": "commonjs",
@@ -22,7 +22,7 @@
   },
   "keywords": [
     "COBOL",
-    "TWSE",
+    "TWSE", "OTC", "Securities",
     "TMP"
   ],
   "author": "LsYueh",
