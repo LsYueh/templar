@@ -1,10 +1,10 @@
 'use strict'
 
-const { test } = require('tap')
+const { test } = require('tap');
 
-const templar = require('./')
+const templar = require('./');
 
-const { version } = require('./package.json')
+const { version } = require('./package.json');
 
 
 /**------+---------+---------+---------+---------+---------+---------+----------
@@ -63,4 +63,4 @@ test('TeMPlar', async (t) => {
 
         t.throws(() => { templar.parse('', { category: 'foo' }) }, 'should throw if invalid category');
     })
-})
+});

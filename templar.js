@@ -14,6 +14,7 @@ const { version } = require('./lib/meta')
  * @param {string|Buffer} message 
  * @param {object} [options]
  * @param {string} [options.category] - 'file-transfer' or 'report' (default: 'file-transfer')
+ * @returns Parsed message object
  */
 function parse(message, options = {}) {
     if (!message) {
@@ -39,6 +40,7 @@ function parse(message, options = {}) {
 /**
  * stringify
  * @param {object} obj 
+ * @returns {string|Buffer} Stringified message
  */
 function stringify(obj) {
     throw new Error('Not implemented.');

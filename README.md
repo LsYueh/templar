@@ -1,7 +1,7 @@
 # TeMPlar
 `TMP`是臺灣證券交易所（TWSE）所使用的專屬傳輸協定，全名為`Transaction Message Protocol`，用於證券交易相關的訊息傳輸。此工具用於解析TMP提供的`委託`/`成交`/`申報`/`檔案傳輸`服務訊息內容，將序列化的字串資料轉為非序列化的資料物件後再加以利用。
 
-<br><br>
+<br>
 
 ![流程圖](doc/workflow.png)
 
@@ -9,49 +9,44 @@
 
 # 使用方式
 
-## 單筆訊息及檔案傳輸
-
 ```js
-const { parse } = require('./parse-f.js');
+const templar = require('templar');
 ```
 
+檔案傳輸
 ```js
-const message = parse('20000008595900845000000011T3000000100');
+
+const message = templar.parse('20020508595900000084500003M01', { category: 'file-transfer' }
 
 console.log(message);
 
 // Message_t {
-//   body: [ { FileCode: 'T30', FileSize: 100 } ],
-//   raw: '20000008595900845000000011T3000000100',
+//   body: [ { FileCode: 'M01', ResponseMessage: '' } ],
+//   raw: Uint8Array('20000008595900845000000011T3000000100'),
 //   header: {
 //     SubsystemName: '20',
-//     FunctionCode: '00',
-//     MessageType: '00',
+//     FunctionCode: '02',
+//     MessageType: '05',
 //     MessageTime: 2025-08-17T00:59:59.000Z,
 //     StatusCode: '00',
-//     SourceId: '8450',
-//     ObjectId: '0000',
-//     BodyLength: 11
+//     SourceId: '0000',
+//     ObjectId: '8450',
+//     BodyLength: 3
 //   },
-//   id: 'F010',
-//   remained: ''
+//   id: 'F060',
+//   remained: Uint8Array('')
 // }
 ```
 
-## 成交回報
-
+成交回報
 ```js
-const { parse } = require('./parse-r.js');
-```
-
-```js
-const message = parse('500000085959008450000001'); // R1
+const message = templar.parse('500000085959008450000001', { category: 'report' });
 
 console.log(message);
 
 // Message_t {
 //   body: [ { BrokerId: '8450', StartSeq: 1 } ],
-//   raw: '500000085959008450000001',
+//   raw: Uint8Array('500000085959008450000001'),
 //   header: {
 //     SubsystemName: '50',
 //     FunctionCode: '00',
@@ -60,86 +55,8 @@ console.log(message);
 //     StatusCode: '00'
 //   },
 //   id: 'R1',
-//   remained: ''
+//   remained: Uint8Array('')
 // }
-```
-
-```js
-const message = parse('50100009005900013202' + ''.padStart(66, '0')+ ''.padStart(66, '0')); // R3
-
-console.log(message);
-
-// Message_t {
-//   body: [
-//     {
-//       StkNo: '000000',
-//       MthQty: 0,
-//       MthPr: 0,
-//       MthTime: 2025-08-14T16:00:00.000Z,
-//       ExCd: '0',
-//       BuySell: '0',
-//       OrderNo: '00000',
-//       IVAcNo: '0000000',
-//       OdrTpe: '0',
-//       SeqNo: '000000',
-//       BrokerId: '0000',
-//       RecNo: '00000000',
-//       MarkS: '0'
-//     },
-//     {
-//       StkNo: '000000',
-//       MthQty: 0,
-//       MthPr: 0,
-//       MthTime: 2025-08-14T16:00:00.000Z,
-//       ExCd: '0',
-//       BuySell: '0',
-//       OrderNo: '00000',
-//       IVAcNo: '0000000',
-//       OdrTpe: '0',
-//       SeqNo: '000000',
-//       BrokerId: '0000',
-//       RecNo: '00000000',
-//       MarkS: '0'
-//     }
-//   ],
-//   raw: '50100009005900013202000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-//   header: {
-//     SubsystemName: '50',
-//     FunctionCode: '10',
-//     MessageType: '00',
-//     MessageTime: 2025-08-15T01:00:59.000Z,
-//     StatusCode: '00',
-//     BodyLength: 132,
-//     BodyCnt: 2
-//   },
-//   id: 'R3',
-//   remained: ''
-// }
-```
-
-```js
-const message = parse('50200011223300999998'); // R6
-
-console.log(message);
-
-// Message_t {
-//   body: [ { TotalRecord: 999998 } ],
-//   raw: '50200011223300999998',
-//   header: {
-//     SubsystemName: '50',
-//     FunctionCode: '20',
-//     MessageType: '00',
-//     MessageTime: 2025-08-15T03:22:33.000Z,
-//     StatusCode: '00'
-//   },
-//   id: 'R6',
-//   remained: ''
-// }
-
-
-parse('5020001122330099999'); // R6 (Error!)
-
-// Exception: [R6] Insufficient message length, require '6', got '5'.
 ```
 
 <br><br>
