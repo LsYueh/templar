@@ -114,6 +114,8 @@ function buildDDL(options) {
  * 主程式
  * @param {object} argv 命令列參數
  * @param {string} [argv.client] 資料庫方言 (e.g., 'mysql', 'postgres', 'sqlite')
+ * @param {string} [argv.market] 
+ * @param {string} [argv.file] 
  * @returns {number} 結束碼 (0 表示成功)
  */
 function main(argv) {
