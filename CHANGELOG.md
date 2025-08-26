@@ -1,5 +1,12 @@
 # Changelog
 
+## [Not Released] (2025-08-26)
+
+### Added
+* `Field`現在可透過PIC子句的宣告帶入預設轉換後的資料型別
+
+<br>
+
 ## 0.0.0-alpha5 (2025-08-25)
 
 ### Added
