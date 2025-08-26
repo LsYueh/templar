@@ -99,12 +99,10 @@ Options:
 
 SQLite
 ```console
-> node ./cli/ddl-gen.js
+> node ./cli/ddl-gen.js --file T30             
 -- DDL for database client: sqlite --
 sqlite does not support inserting default values. Set the `useNullAsDefault` flag to hide this warning. (see docs https://knexjs.org/guide/query-builder.html#insert).
--- DDL for table: O40 (TSE) - 零股價格資料檔 --
 -- DDL for table: T30 (TSE) - 漲跌幅度資料檔 --
-create table `o40` (`StockNo` varchar(6), `StockName` varchar(16), `RslPr` float, `FllPr` float, `RefPr` float, `LMthDat` date, primary key (`StockNo`));
 create table `t30` (`StockNo` varchar(6), `BullPrice` float, `LdcPrice` float, `BearPrice` float, `LastMthDate` date, `SetType` varchar(1), `MarkW` varchar(1), `MarkP` varchar(1), `MarkL` varchar(1), `IndCode` varchar(2), `StkCode` varchar(2), `MarkM` varchar(1), `StockName` varchar(16), `MarkWDetails_MatchInterval` integer, `MarkWDetails_OrderLimit` integer, `MarkWDetails_OrdersLimit` integer, `MarkWDetails_PrepayRate` integer, `MarkS` varchar(1), `MarkF` varchar(1), `MarkDayTrade` varchar(1), `StkCTGCD` varchar(1), primary key (`StockNo`));
 ```
 
@@ -115,7 +113,8 @@ MySQL/MariaDB (指定產出T30)
 > node ./cli/ddl-gen.js --client mysql --file T30
 -- DDL for database client: mysql --
 -- DDL for table: T30 (TSE) - 漲跌幅度資料檔 --
-create table `t30` (`StockNo` varchar(6) comment '股票代號', `BullPrice` decimal(9, 4) comment '漲停價', `LdcPrice` decimal(9, 4) comment '開盤競價基準', `BearPrice` decimal(9, 4) comment '跌停價', `LastMthDate` date comment '上次成交日', `SetType` varchar(1) comment '交易方式', `MarkW` varchar(1) comment '處置股票註記', `MarkP` varchar(1) comment '注意股票註記', `MarkL` varchar(1) comment '委託限制註記', `IndCode` varchar(2) comment '產業別代碼', `StkCode` varchar(2) comment '證券別代碼', `MarkM` varchar(1) comment '豁免平盤下融券賣出註記', `StockName` varchar(16) comment '股票中文名稱', `MarkWDetails_MatchInterval` int(3) unsigned comment '撮合循環時間 (分)', `MarkWDetails_OrderLimit` int(6) unsigned comment '單筆委託限制數量', `MarkWDetails_OrdersLimit` int(6) unsigned comment '多筆委託限制數量', `MarkWDetails_PrepayRate` int(3) unsigned comment '款券預收成數 (%)', `MarkS` varchar(1) comment '豁免平盤下借券賣出註記', `MarkF` varchar(1) comment '面額註記', `MarkDayTrade` varchar(1) comment '可現股當沖註記', `StkCTGCD` varchar(1) comment '板別註記', primary key (`StockNo`)) comment = '漲跌幅度資料檔';
+create table `t30` (`StockNo` varchar(6) comment '股票代號', `BullPrice` decimal(9, 4) comment '漲停價', `LdcPrice` decimal(9, 4) comment '開盤競價基準', `BearPrice` decimal(9, 4) comment '跌停價', `LastMthDate` date comment '上次成交日', `SetType` varchar(1) comment '交易方式', `MarkW` varchar(1) comment '處置股票註記', `MarkP` varchar(1) comment '注意股票註記', `MarkL` varchar(1) comment '委託限制註記', `IndCode` varchar(2) comment '產業別代碼', `StkCode` varchar(2) comment '證券別代碼', `MarkM` varchar(1) comment '豁免平盤下融券賣出註記', `StockName` varchar(16) comment '股票中文名稱', `MarkWDetails_MatchInterval` smallint unsigned comment '撮合循環時間 (分)', `MarkWDetails_OrderLimit` mediumint unsigned comment '單筆委託限制數量', `MarkWDetails_OrdersLimit` mediumint unsigned comment '多筆委託限制數量', `MarkWDetails_PrepayRate` smallint unsigned comment '款券預收成數 (%)', `MarkS` varchar(1) comment '豁免平盤下借券賣出註記', `MarkF` varchar(1) comment '面額註記', `MarkDayTrade` varchar(1) comment '可現股當沖註記', `StkCTGCD` varchar(1) comment '板別註記', primary key (`StockNo`)) comment = '漲跌幅度資料檔';
+
 ```
 
 <br>
@@ -125,7 +124,7 @@ MySQL/MariaDB (指定產出上櫃市場用的T30)
 > node ./cli/ddl-gen.js --client mysql --file T30 --market OTC
 -- DDL for database client: mysql --
 -- DDL for table: T30 (OTC) - 漲跌幅度資料檔 --
-create table `t30` (`StockNo` varchar(6) comment '股票代號', `BullPrice` decimal(9, 4) comment '漲停價', `LdcPrice` decimal(9, 4) comment '開盤競價基準', `BearPrice` decimal(9, 4) comment '跌停價', `LastMthDate` date comment '上次成交日', `SetType` varchar(1) comment '交易方式', `MarkW` varchar(1) comment '處置股票註記', `MarkP` varchar(1) comment '注意股票註記', `MarkL` varchar(1) comment '委託限制註記', `IndCode` varchar(2) comment '產業別代碼', `IndSubCode` varchar(2) comment '證券別代碼', `MarkM` varchar(1) comment '豁免平盤下融券賣出註記', `StockName` varchar(16) comment '股票中文名稱', `MarkWDetails_MatchInterval` int(3) unsigned comment '撮合循環時間 (分)', `MarkWDetails_OrderLimit` int(6) unsigned comment '單筆委託限制數量', `MarkWDetails_OrdersLimit` int(6) unsigned comment '多筆委託限制數量', `MarkWDetails_PrepayRate` int(3) unsigned comment '款券預收成數 (%)', `MarkS` varchar(1) comment '豁免平盤下借券賣出註記', `StkMark` varchar(1) comment '類股註記', `MarkF` varchar(1) comment '面額註記', `MarkDayTrade` varchar(1) comment '可現股當沖註記', `StkCTGCD` varchar(1) comment '板別註記', primary key (`StockNo`)) comment = '漲跌幅度資料檔';
+create table `t30` (`StockNo` varchar(6) comment '股票代號', `BullPrice` decimal(9, 4) comment '漲停價', `LdcPrice` decimal(9, 4) comment '開盤競價基準', `BearPrice` decimal(9, 4) comment '跌停價', `LastMthDate` date comment '上次成交日', `SetType` varchar(1) comment '交易方式', `MarkW` varchar(1) comment '處置股票註記', `MarkP` varchar(1) comment '注意股票註記', `MarkL` varchar(1) comment '委託限制註記', `IndCode` varchar(2) comment '產業別代碼', `IndSubCode` varchar(2) comment '證券別代碼', `MarkM` varchar(1) comment '豁免平盤下融券賣出註記', `StockName` varchar(16) comment '股票中文名稱', `MarkWDetails_MatchInterval` smallint unsigned comment '撮合循環時間 (分)', `MarkWDetails_OrderLimit` mediumint unsigned comment '單筆委託限制數量', `MarkWDetails_OrdersLimit` mediumint unsigned comment '多筆委託限制數量', `MarkWDetails_PrepayRate` smallint unsigned comment '款券預收成數 (%)', `MarkS` varchar(1) comment '豁免平盤下借券賣出註記', `StkMark` varchar(1) comment '類股註記', `MarkF` varchar(1) comment '面額註記', `MarkDayTrade` varchar(1) comment '可現股當沖註記', `StkCTGCD` varchar(1) comment '板別註記', primary key (`StockNo`)) comment = '漲跌幅度資料檔';
 ```
 
 <br><br>
@@ -159,6 +158,26 @@ test('Parse PIC 9', async (t) => {
     t.equal(parse({ picStr: '9(5)', dataType: DATA_TYPE.Unsigned, buffer: Buffer.from('123456') }), 23456);
 });
 ```
+
+<br><br>
+
+# COBOL PICTURE (PIC) 子句
+
+目前支援的解析格式  
+
+基本:
+- PIC X
+- PIC X(4)
+- PIC 9999
+- PIC 9(4)
+
+混合:
+- PIC 99V99
+- PIC 9(3)V9(2)
+- PIC 9(3)V99
+- PIC S99V99
+- PIC S9(3)V9(2)
+- PIC S9(3)V99
 
 <br><br>
 

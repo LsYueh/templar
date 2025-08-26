@@ -3,6 +3,7 @@
 'use strict'
 
 /**
+ * @typedef {import('../lib/spec/field/field.js').PicType_t} PicType_t
  * @typedef {import('../lib/spec/field/field.js').Field_t} Field_t
  */
 
@@ -31,26 +32,39 @@ function columnGen(field, table) {
     const columnName = field.name;
     // 根據 Copybook Field 的屬性決定資料型態
 
+    /**
+     * 9/S9的轉換
+     * @param {PicType_t} picType 
+     * @param {boolean} isUnsigned 
+     * @returns 
+     */
+    function nine(picType, isUnsigned) {
+        if (picType.decimals > 0) {
+            return table.decimal(columnName, picType.length + picType.decimals, picType.decimals);
+        } else {
+            /** */ if (picType.length <= 2) {
+                return table.tinyint(columnName).unsigned(isUnsigned);
+            } else if (picType.length <= 4) {
+                return table.smallint(columnName).unsigned(isUnsigned);
+            } else if (picType.length <= 6) {
+                return table.mediumint(columnName).unsigned(isUnsigned);
+            } else if (picType.length <= 9) {
+                return table.integer(columnName).unsigned(isUnsigned);
+            } else if (picType.length <= 18) {
+                return table.bigint(columnName).unsigned(isUnsigned);
+            } else {
+                return table.decimal(columnName, picType.length);
+            }
+        }
+    }
+
     switch (field.dataType) {
-        case DATA_TYPE.String   : 
+        case DATA_TYPE.String   :
         case DATA_TYPE.X        : return table.string(columnName, field.picType.length);
         case DATA_TYPE.Unsigned : 
-        case DATA_TYPE._9       : {
-            if (field.picType.decimals > 0) {
-                return table.decimal(columnName, field.picType.length + field.picType.decimals, field.picType.decimals);
-            } else {
-                return table.integer(columnName, field.picType.length).unsigned(true);
-            }
-        }
+        case DATA_TYPE._9       : return nine(field.picType, true);
         case DATA_TYPE.Signed   : 
-        case DATA_TYPE.S9       : 
-        {
-            if (field.picType.decimals > 0) {
-                return table.decimal(columnName, field.picType.length + field.picType.decimals, field.picType.decimals);
-            } else {
-                return table.integer(columnName, field.picType.length).unsigned(false);
-            }
-        }
+        case DATA_TYPE.S9       : return nine(field.picType, false);
         case DATA_TYPE.Date     : return table.date(columnName);
         case DATA_TYPE.Time     : return table.time(columnName);
         case DATA_TYPE.Datetime : return table.dateTime(columnName);
