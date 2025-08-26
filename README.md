@@ -408,7 +408,10 @@ PVC：Permanent Virtual Circuit（永久虛擬電路）
 
 ```console
 {project-root}
+ ├─ cli <-------------------- CLI工具
+ │   └─ ...
  ├─ lib
+ │   ├─ copybook  <---------- 文件內容轉換
  │   ├─ field  <------------- 欄位轉換
  │   ├─ message  <----------- 訊息解析
  │   ├─ spec
