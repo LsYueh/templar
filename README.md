@@ -427,6 +427,8 @@ PVC：Permanent Virtual Circuit（永久虛擬電路）
  └─ templar.js
 ```
 
+![結構圖](doc/lib-layers.png)
+
 <br><br>
 
 # 其他
