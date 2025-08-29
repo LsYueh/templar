@@ -1,8 +1,20 @@
 'use strict'
 
-const f = require('./lib/message/parse/file-transfer.js')
-const r = require('./lib/message/parse/report.js')
-const { version } = require('./lib/meta')
+const f = require('./lib/message/parse/file-transfer.js');
+const r = require('./lib/message/parse/report.js');
+const { version } = require('./lib/meta');
+
+/**------+---------+---------+---------+---------+---------+---------+----------
+ * Copybook
+---------+---------+---------+---------+---------+---------+---------+--------*/
+
+/**
+ * COBOL PIC Copybook Utilities
+ * @namespace copybook
+ */
+const copybook = {};
+
+copybook.parse = require('./lib/copybook/parse.js').parse;
 
 
 /**------+---------+---------+---------+---------+---------+---------+----------
@@ -51,6 +63,8 @@ function stringify(obj) {
  * Exports
 ---------+---------+---------+---------+---------+---------+---------+--------*/
 
-module.exports.version = version
-module.exports.parse = parse
-module.exports.stringify = stringify
+/** */
+module.exports.version = version;
+module.exports.copybook = copybook;
+module.exports.parse = parse;
+module.exports.stringify = stringify;
