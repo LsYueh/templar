@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0-beta1 (2025-08-31)
+
+### Added
+* 新增對成交回報訊息物件的序列化(`stringify`)功能
+
+<br>
+
 ## [Not Released] (2025-08-26)
 
 ### Added

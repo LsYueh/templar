@@ -83,7 +83,7 @@ function stringify(message, options = {}) {
             throw new Error('Not implemented.');
 
         case 'report': // Report
-            return r.stringify(message, { overpunchOption })
+            return r.stringify(message, { overpunchOption });
 
         default:
             throw new TypeError(`Invalid category '${catgory}', require 'file-transfer' or 'report'.`);

@@ -62,5 +62,24 @@ test('TeMPlar', async (t) => {
         }, 'should parse report message');
 
         t.throws(() => { templar.parse('', { category: 'foo' }) }, 'should throw if invalid category');
-    })
+    });
+
+    t.test('stringify()', async (t) => {
+        // const message = {
+        //     id: 'F060',
+        //     header: {
+        //         SubsystemName: '20',
+        //         FunctionCode: '02',
+        //         MessageType: '05',
+        //         MessageTime: new Date('2025-08-17T00:59:59.000Z'),
+        //         StatusCode: '00',
+        //         SourceId: '0000',
+        //         ObjectId: '8450',
+        //         BodyLength: 3
+        //     },
+        //     body: [ { FileCode: 'M01', ResponseMessage: '' } ],
+        // };
+
+        // t.equal(templar.stringify(message),'20020508595900000084500003M01');
+    });
 });

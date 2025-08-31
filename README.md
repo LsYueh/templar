@@ -1,9 +1,10 @@
 # TeMPlar
-`TMP`是臺灣證券交易所（TWSE）所使用的專屬傳輸協定，全名為`Transaction Message Protocol`，用於證券交易相關的訊息傳輸。此工具用於解析TMP提供的`委託`/`成交`/`申報`/`檔案傳輸`服務訊息內容，將序列化的字串資料轉為非序列化的資料物件後再加以利用。
+`TMP`是臺灣證券交易所（TWSE）所使用的專屬傳輸協定，全名為`Transaction Message Protocol`，用於證券交易相關的訊息傳輸。此工具用於解析TMP提供的`委託`/`成交`/`申報`/`檔案傳輸`服務訊息內容，將序列化的字串資料轉為非序列化的資料物件後再加以利用。非序列化的資料亦可使用此工具轉換成`COBOL`可處理的序列化字串資料以用於系統間的資料交換。
 
 <br>
 
 ![流程圖](doc/workflow.png)
+![流程圖](doc/stringify.png)
 
 <br>
 
@@ -58,6 +59,24 @@ console.log(message);
 //   remained: Uint8Array('')
 // }
 ```
+```js
+const message = {
+  id: 'R1',
+  header: {
+    SubsystemName: '50',
+    FunctionCode: '00',
+    MessageType: '00',
+    MessageTime: new Date('2025-08-15T00:59:59.000Z'),
+    StatusCode: '00'
+  },
+  body: [ { BrokerId: '8450', StartSeq: 1 } ],
+};
+
+console.log(templar.stringify(message));
+
+// '500000085959008450000001'
+```
+
 
 <br><br>
 
@@ -428,6 +447,36 @@ PVC：Permanent Virtual Circuit（永久虛擬電路）
 ```
 
 ![結構圖](doc/lib-layers.png)
+
+<br><br>
+
+# 發布函式庫
+
+* 打包
+  ```bash
+  npm pack
+  ```
+  ```bash
+  > npm pack
+  ...
+  ...
+  npm notice Tarball Details
+  npm notice name: templar
+  npm notice version: X.Y.Z
+  npm notice filename: templar-X.Y.Z.tgz
+  npm notice package size: 374.7 kB
+  npm notice unpacked size: 1.6 MB
+  npm notice shasum: ba2890224935e4a6a0ecdf91d9585c287a4c3073
+  npm notice integrity: sha512-3I975LfONtGXo[...]K22YKPtY5EZcQ==
+  npm notice total files: 61
+  npm notice
+  templar-X.Y.Z.tgz
+  ```
+
+* 安裝
+  ```bash
+  npm install ./templar-X.Y.Z.tgz
+  ```
 
 <br><br>
 
