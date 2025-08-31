@@ -1,8 +1,18 @@
 'use strict'
 
-const f = require('./lib/message/parse/file-transfer.js');
-const r = require('./lib/message/parse/report.js');
+/**
+ * @typedef {import('./lib/message/parse/common.js').Message_t} Message_t
+ * @typedef {import('./lib/spec/field/cobol/overpunch.js').OverpunchOpt} OverpunchOpt
+ */
+
+const f = {}; const r = {}
+
+f.parse = require('./lib/message/parse/file-transfer.js').parse;
+r.parse = require('./lib/message/parse/report.js').parse;
+r.stringify = require('./lib/message/stringify/report.js').stringify;
+
 const { version } = require('./lib/meta');
+
 
 /**------+---------+---------+---------+---------+---------+---------+----------
  * Copybook
@@ -46,16 +56,38 @@ function parse(message, options = {}) {
 
         default:
             throw new TypeError(`Invalid category '${catgory}', require 'file-transfer' or 'report'.`);
-    }   
+    }
 }
 
 /**
  * stringify
- * @param {object} obj 
- * @returns {string|Buffer} Stringified message
+ * @param {Message_t} message 
+ * @param {object} [options]
+ * @param {string} [options.category] - 'file-transfer' or 'report' (default: 'file-transfer')
+ * @param {OverpunchOpt} [options.overpunchOption] 
+ * @returns {string} Stringified message
  */
-function stringify(obj) {
-    throw new Error('Not implemented.');
+function stringify(message, options = {}) {
+    if (!message || typeof message !== 'object') {
+        throw new TypeError('Invalid message, require object.')
+    }
+
+    const overpunchOption = options.overpunchOption;
+
+    const catgory = options?.category || 'file-transfer';
+    if (catgory !== 'file-transfer' && catgory !== 'report')
+        throw new TypeError(`Invalid category '${catgory}', require 'file-transfer' or 'report'.`);
+
+    switch (catgory) {
+        case 'file-transfer': // File Transfer
+            throw new Error('Not implemented.');
+
+        case 'report': // Report
+            return r.stringify(message, { overpunchOption })
+
+        default:
+            throw new TypeError(`Invalid category '${catgory}', require 'file-transfer' or 'report'.`);
+    }
 }
 
 
