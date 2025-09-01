@@ -147,5 +147,7 @@ yarn.lock
 #
 .tap
 
-#
-types
+# Node-API
+/build/*
+!/build/package.json
+*.node
