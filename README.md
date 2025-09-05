@@ -53,7 +53,7 @@ const message = {
   body: [ { FileCode: 'M01', RequestMessage: '' } ],
 };
 
-console.log(templar.stringify('20020508595900000084500003M01', { category: 'file-transfer' });
+console.log(templar.stringify(message, { category: 'file-transfer' });
 
 // 20020508595900000084500003M01
 ```
