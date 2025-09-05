@@ -55,7 +55,7 @@ const message = {
 
 console.log(templar.stringify(message, { category: 'file-transfer' });
 
-// 20020508595900000084500003M01
+// 20020508595900845000000003M01
 ```
 
 
