@@ -7,8 +7,10 @@
 
 const f = {}; const r = {}
 
-f.parse = require('./lib/message/parse/file-transfer.js').parse;
-r.parse = require('./lib/message/parse/report.js').parse;
+f.parse     = require('./lib/message/parse/file-transfer.js').parse;
+f.stringify = require('./lib/message/stringify/file-transfer.js').stringify;
+
+r.parse     = require('./lib/message/parse/report.js').parse;
 r.stringify = require('./lib/message/stringify/report.js').stringify;
 
 const { version } = require('./lib/meta');
@@ -80,7 +82,7 @@ function stringify(message, options = {}) {
 
     switch (catgory) {
         case 'file-transfer': // File Transfer
-            throw new Error('Not implemented.');
+            return f.stringify(message, { overpunchOption });
 
         case 'report': // Report
             return r.stringify(message, { overpunchOption });

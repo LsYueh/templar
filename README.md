@@ -16,7 +16,6 @@ const templar = require('templar');
 
 檔案傳輸
 ```js
-
 const message = templar.parse('20020508595900000084500003M01', { category: 'file-transfer' }
 
 console.log(message);
@@ -38,6 +37,27 @@ console.log(message);
 //   remained: Uint8Array('')
 // }
 ```
+```js
+const message = {
+  id: 'F050',
+  header: {
+    SubsystemName: '20',
+    FunctionCode: '02',
+    MessageType: '05',
+    MessageTime: new Date('2025-08-15T00:59:59.000Z'),
+    StatusCode: '00',
+    SourceId: '8450',
+    ObjectId: '0000',
+    // BodyLength: 3, // 會自動根據body變化
+  },
+  body: [ { FileCode: 'M01', RequestMessage: '' } ],
+};
+
+console.log(templar.stringify('20020508595900000084500003M01', { category: 'file-transfer' });
+
+// 20020508595900000084500003M01
+```
+
 
 成交回報
 ```js
@@ -72,7 +92,7 @@ const message = {
   body: [ { BrokerId: '8450', StartSeq: 1 } ],
 };
 
-console.log(templar.stringify(message));
+console.log(templar.stringify(message, { category: 'report' }));
 
 // '500000085959008450000001'
 ```
