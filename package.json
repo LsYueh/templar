@@ -1,6 +1,6 @@
 {
   "name": "templar",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "TWSE Transaction Message Protocol (TMP) converter",
   "main": "templar.js",
   "type": "commonjs",
@@ -10,7 +10,8 @@
     "lib",
     "!**/*.test.js",
     "types/templar.d.ts",
-    "types/lib/copybook/parse.d.ts"
+    "types/lib/copybook/parse.d.ts",
+    "types/lib/spec/field"
   ],
   "exports": {
     ".": {

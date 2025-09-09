@@ -28,6 +28,14 @@ const copybook = {};
 
 copybook.parse = require('./lib/copybook/parse.js').parse;
 
+copybook.spec = {
+    tse: require('./lib/spec/copybook/tse/index.js'),
+    otc: require('./lib/spec/copybook/otc/index.js'),
+}
+
+copybook.DATA_TYPE = require('./lib/spec/field/field.js').DATA_TYPE;
+copybook.PicType_t = require('./lib/spec/field/field.js').PicType;
+copybook.Field_t = require('./lib/spec/field/field.js').Field;
 
 /**------+---------+---------+---------+---------+---------+---------+----------
  * Methods

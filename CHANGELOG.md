@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.1 (2025-09-10)
+
+### Added
+* 增加幾個Copybook在TS要用的types
+
+<br>
+
 ## 0.4.0 (2025-09-09)
 
 ### ⚠ BREAKING CHANGES
