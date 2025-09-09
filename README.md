@@ -97,75 +97,6 @@ console.log(templar.stringify(message, { category: 'report' }));
 // '500000085959008450000001'
 ```
 
-
-<br><br>
-
-# 資料表建立
-請先安裝`Knex`
-```console
-$ npm install knex --save
-```
-<br>
-
-安裝對應的資料庫驅動程式套件
-```console
-# Then add one of the following (adding a --save) flag:
-$ npm install pg pg-native # Postgres
-$ npm install sqlite3
-$ npm install mysql # MySQL/MariaDB
-$ npm install mysql2
-$ npm install oracledb # Oracle Database
-$ npm install tedious # Microsoft SQL Server
-```
-
-<br>
-
-## 使用方式
-```console
-> node ./cli/ddl-gen.js --help
-ddl-gen.js [options]
-
-Options:
-  --version  Show version number                                       [boolean]
-  --client   Database client (e.g., mysql, postgres, sqlite)            [string]
-  --market   Market (TSE or OTC, default: TSE)         [string] [default: "TSE"]
-  --file     FILE-CODE of the copybook to generate DDL for (default: all)
-                                                                        [string]
-  --help     Show help                                                 [boolean]
-```
-
-<br>
-
-SQLite
-```console
-> node ./cli/ddl-gen.js --file T30             
--- DDL for database client: sqlite --
-sqlite does not support inserting default values. Set the `useNullAsDefault` flag to hide this warning. (see docs https://knexjs.org/guide/query-builder.html#insert).
--- DDL for table: T30 (TSE) - 漲跌幅度資料檔 --
-create table `t30` (`StockNo` varchar(6), `BullPrice` float, `LdcPrice` float, `BearPrice` float, `LastMthDate` date, `SetType` varchar(1), `MarkW` varchar(1), `MarkP` varchar(1), `MarkL` varchar(1), `IndCode` varchar(2), `StkCode` varchar(2), `MarkM` varchar(1), `StockName` varchar(16), `MarkWDetails_MatchInterval` integer, `MarkWDetails_OrderLimit` integer, `MarkWDetails_OrdersLimit` integer, `MarkWDetails_PrepayRate` integer, `MarkS` varchar(1), `MarkF` varchar(1), `MarkDayTrade` varchar(1), `StkCTGCD` varchar(1), primary key (`StockNo`));
-```
-
-<br>
-
-MySQL/MariaDB (指定產出T30)
-```console
-> node ./cli/ddl-gen.js --client mysql --file T30
--- DDL for database client: mysql --
--- DDL for table: T30 (TSE) - 漲跌幅度資料檔 --
-create table `t30` (`StockNo` varchar(6) comment '股票代號', `BullPrice` decimal(9, 4) comment '漲停價', `LdcPrice` decimal(9, 4) comment '開盤競價基準', `BearPrice` decimal(9, 4) comment '跌停價', `LastMthDate` date comment '上次成交日', `SetType` varchar(1) comment '交易方式', `MarkW` varchar(1) comment '處置股票註記', `MarkP` varchar(1) comment '注意股票註記', `MarkL` varchar(1) comment '委託限制註記', `IndCode` varchar(2) comment '產業別代碼', `StkCode` varchar(2) comment '證券別代碼', `MarkM` varchar(1) comment '豁免平盤下融券賣出註記', `StockName` varchar(16) comment '股票中文名稱', `MarkWDetails_MatchInterval` smallint unsigned comment '撮合循環時間 (分)', `MarkWDetails_OrderLimit` mediumint unsigned comment '單筆委託限制數量', `MarkWDetails_OrdersLimit` mediumint unsigned comment '多筆委託限制數量', `MarkWDetails_PrepayRate` smallint unsigned comment '款券預收成數 (%)', `MarkS` varchar(1) comment '豁免平盤下借券賣出註記', `MarkF` varchar(1) comment '面額註記', `MarkDayTrade` varchar(1) comment '可現股當沖註記', `StkCTGCD` varchar(1) comment '板別註記', primary key (`StockNo`)) comment = '漲跌幅度資料檔';
-
-```
-
-<br>
-
-MySQL/MariaDB (指定產出上櫃市場用的T30)
-```console
-> node ./cli/ddl-gen.js --client mysql --file T30 --market OTC
--- DDL for database client: mysql --
--- DDL for table: T30 (OTC) - 漲跌幅度資料檔 --
-create table `t30` (`StockNo` varchar(6) comment '股票代號', `BullPrice` decimal(9, 4) comment '漲停價', `LdcPrice` decimal(9, 4) comment '開盤競價基準', `BearPrice` decimal(9, 4) comment '跌停價', `LastMthDate` date comment '上次成交日', `SetType` varchar(1) comment '交易方式', `MarkW` varchar(1) comment '處置股票註記', `MarkP` varchar(1) comment '注意股票註記', `MarkL` varchar(1) comment '委託限制註記', `IndCode` varchar(2) comment '產業別代碼', `IndSubCode` varchar(2) comment '證券別代碼', `MarkM` varchar(1) comment '豁免平盤下融券賣出註記', `StockName` varchar(16) comment '股票中文名稱', `MarkWDetails_MatchInterval` smallint unsigned comment '撮合循環時間 (分)', `MarkWDetails_OrderLimit` mediumint unsigned comment '單筆委託限制數量', `MarkWDetails_OrdersLimit` mediumint unsigned comment '多筆委託限制數量', `MarkWDetails_PrepayRate` smallint unsigned comment '款券預收成數 (%)', `MarkS` varchar(1) comment '豁免平盤下借券賣出註記', `StkMark` varchar(1) comment '類股註記', `MarkF` varchar(1) comment '面額註記', `MarkDayTrade` varchar(1) comment '可現股當沖註記', `StkCTGCD` varchar(1) comment '板別註記', primary key (`StockNo`)) comment = '漲跌幅度資料檔';
-```
-
 <br><br>
 
 # 訊息處理
@@ -223,46 +154,34 @@ test('Parse PIC 9', async (t) => {
 # 資料型態對照表
 
 ## 字串
-| COBOL PIC   | 說明                   | SQL 對應                    |
-| ----------- | ---------------------- | :------------------------: |
-| `PIC X(n)`  | 任意字元，長度 n            | `CHAR(n)` / `VARCHAR(n)`   |
-| `PIC A(n)`  | 只允許字母                 | `CHAR(n)` / `VARCHAR(n)`   |
-| `PIC AN(n)` | 字母 + 數字                | `CHAR(n)` / `VARCHAR(n)`   |
-| `PIC G(n)`  | 雙位元組字元 (DBCS, EBCDIC) | `NCHAR(n)` / `NVARCHAR(n)` |
+| COBOL PIC   | 說明                   | Node 對應  |
+| ----------- | ---------------------- | :---------: |
+| `PIC X(n)`  | 任意字元，長度 n            | `String`  |
+| `PIC A(n)`  | 只允許字母                 | `String`  |
+| `PIC AN(n)` | 字母 + 數字                | `String`  |
+| `PIC G(n)`  | 雙位元組字元 (DBCS, EBCDIC) | `String`  |
 
 <br>
 
-## 整數
+## 整數/小數
 
-| COBOL PIC                  | 位數 (n) | SIGNED 對應 (範圍)                                                           | UNSIGNED 對應 (範圍)                                           |
-| -------------------------- | :-----: | --------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `PIC 9(1)` \~ `PIC 9(3)`<br>`PIC S9(1)` \~ `PIC S9(3)`   | 1–2 位   | `TINYINT`<br>範圍 **-128 \~ 127**                                            | `TINYINT UNSIGNED`<br>範圍 **0 \~ 255**                       |
-| `PIC 9(4)` \~ `PIC 9(5)`<br>`PIC S9(4)` \~ `PIC S9(5)`   | 3–4 位   | `SMALLINT`<br>範圍 **-32,768 \~ 32,767**                                     | `SMALLINT UNSIGNED`<br>範圍 **0 \~ 65,535**                   |
-| `PIC 9(6)` \~ `PIC 9(8)`<br>`PIC S9(6)` \~ `PIC S9(8)`   | 5–6 位   | `MEDIUMINT`<br>範圍 **-8,388,608 \~ 8,388,607**                              | `MEDIUMINT UNSIGNED`<br>範圍 **0 \~ 16,777,215**              |
-| `PIC 9(9)` \~ `PIC 9(10)`<br>`PIC S9(9)` \~ `PIC S9(10)`  | 7–9 位  | `INT`<br>範圍 **-2,147,483,648 \~ 2,147,483,647**                            | `INT UNSIGNED`<br>範圍 **0 \~ 4,294,967,295**                 |
-| `PIC 9(11)` \~ `PIC 9(18)`<br>`PIC S9(11)` \~ `PIC S9(18)` | 10–18 位 | `BIGINT`<br>範圍 **-9,223,372,036,854,775,808 \~ 9,223,372,036,854,775,807** | `BIGINT UNSIGNED`<br>範圍 **0 \~ 18,446,744,073,709,551,615** |
-| `PIC 9(n)`<br>`PIC S9(n)`                 | >18 位   | `DECIMAL(n,0)`                                                              | `DECIMAL(n,0)`                                               |
-
-
-<br>
-
-## 小數
-
-| COBOL PIC        | 說明                 | SQL 對應           |
-| ---------------- | -------------------- | :---------------: |
-| `PIC 9(n)V9(m)`  | 無號小數，整數 n 位，小數 m 位 | `DECIMAL(n+m, m)` |
-| `PIC S9(n)V9(m)` | 有號小數，整數 n 位，小數 m 位 | `DECIMAL(n+m, m)` |
+| COBOL PIC        | 說明                 | Node 對應  |
+| ---------------- | -------------------- | :--------: |
+| `PIC 9(n)`       | 無號小數，整數 n 位     |  `Number`  |
+| `PIC S9(n)`      | 有號小數，整數 n 位     |  `Number`  |
+| `PIC 9(n)V9(m)`  | 無號小數，整數 n 位，小數 m 位 |  `Number`  |
+| `PIC S9(n)V9(m)` | 有號小數，整數 n 位，小數 m 位 |  `Number`  |
 
 <br>
 
 ## 時間/日期
 
-| COBOL PIC                    |   用途   | SQL 對應    |
-| ---------------------------- | ------- | :---------: |
-| `PIC X(8)` (YYYYMMDD)        | 日期     | `DATE`      |
-| `PIC X(6)` (HHmmss)          | 時間     | `TIME`      |
-| `PIC X(9)` (HHmmssSSS)       | 時間     | `TIME`      |
-| `PIC X(14)` (YYYYMMDDHHmmss) | 時間戳記 | `TIMESTAMP` |
+| COBOL PIC                    |   用途   | Node 對應 |
+| ---------------------------- | ------- | :-------: |
+| `PIC X(8)` (YYYYMMDD)        | 日期     | `Date`   |
+| `PIC X(6)` (HHmmss)          | 時間     | `Date`   |
+| `PIC X(9)` (HHmmssSSS)       | 時間     | `Date`   |
+| `PIC X(14)` (YYYYMMDDHHmmss) | 時間戳記 | `Date`   |
 
 ### JS時間格式表示
 在交易所提供的文件中，`X(8)`對應`YYYYMMDD`的`DATE`型別，而`X(6)`與`X(9)`分別對應`HHmmss`/`HHmmssSSS`的`TIME`型別。目前Node 22尚未支援`Temporal.PlainTime`與`Temporal.PlainDate`，故對於上述資料型態的轉換會統一轉換至JS的`Date`型別，其中`X(6)`與`X(9)`會自動補上當下執行的日期。

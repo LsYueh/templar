@@ -147,5 +147,6 @@ yarn.lock
 #
 .tap
 
-#
+# npm run pack
+build
 types

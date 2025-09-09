@@ -1,20 +1,31 @@
 {
   "name": "templar",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "TWSE Transaction Message Protocol (TMP) converter",
   "main": "templar.js",
   "type": "commonjs",
+  "types": "types/templar.d.ts",
+  "files": [
+    "templar.js",
+    "lib",
+    "!**/*.test.js",
+    "types/templar.d.ts",
+    "types/lib/copybook/parse.d.ts"
+  ],
   "exports": {
     ".": {
       "require": "./templar.js",
-      "default": "./templar.js"
+      "default": "./templar.js",
+      "types": "./types/templar.d.ts"
     },
     "./package.json": "./package.json"
   },
   "scripts": {
     "lint": "eslint ./lib",
     "test": "tap run --allow-empty-coverage --disable-coverage --timeout=60000",
-    "test:coverage": "tap run --show-full-coverage --timeout=60000 --coverage-report=text --coverage-report=lcov"
+    "test:coverage": "tap run --show-full-coverage --timeout=60000 --coverage-report=text --coverage-report=lcov",
+    "build:types": "tsc --noCheck",
+    "pack": "npm run build:types && npm pack"
   },
   "repository": {
     "type": "git",
@@ -22,7 +33,9 @@
   },
   "keywords": [
     "COBOL",
-    "TWSE", "OTC", "Securities",
+    "TWSE",
+    "OTC",
+    "Securities",
     "TMP"
   ],
   "author": "LsYueh",
@@ -34,12 +47,11 @@
     "mysql": "^2.18.1",
     "semver": "^7.7.2",
     "sqlite3": "^5.1.7",
-    "tap": "^21.1.0"
+    "tap": "^21.1.0",
+    "typescript": "^5.9.2"
   },
   "dependencies": {
-    "iconv-lite": "^0.7.0",
-    "knex": "^3.1.0",
-    "yargs": "^18.0.0"
+    "iconv-lite": "^0.7.0"
   },
   "engines": {
     "node": ">=18"
